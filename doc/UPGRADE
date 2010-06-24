@@ -1,0 +1,41 @@
+# $Id: UPGRADE,v 1.5 2008/03/25 16:21:06 bamm Exp $ #
+
+The following are instructions for upgrading Sguil version 
+0.6.x to version 0.7.0. If this is a new install, then please
+see the INSTALL document. If you are upgrading from a version
+older than 0.6.x, then you need to follow the upgrade path
+to 0.6.1 before upgrading to version 0.7.0.
+
+Overview:
+
+The functions of the old sensor agent have been split out into
+separate agents (snort_agent, pcap_agent, sancp_agent, and
+pads_agent). Each agent requires its own sensor id (sid). Older
+Sguil installs used the same sid for Snort alerts and SANCP
+flows. The separation of these agents also allows you to place
+agents on different pieces of hardware.
+
+Net names are used to correlate data between these agents. For
+example, when an analyst requests the pcap associated with
+hosts from a specific alert, sguild will use the net name to
+determine which pcap agent to make the request too (each agent
+registers its net name when it connects)."
+
+The upgrade script (update_0.7.tcl) included in the server/sql_scripts
+directory automates the process for you. Please pay careful 
+attention to the information provided by the script. If you 
+run into any problems, help can be found on the sguil-users
+mailing list or in the IRC channel #snort-gui on irc.freenode.net.
+
+BE SURE TO BACK UP YOUR SGUIL DATABASE BEFORE RUNNING THE SCRIPT
+OR RISK LOSING YOUR DATA!
+
+Once the script has finished, you will be able to replace the
+sensor_agent script with the individual agents as described
+in the INSTALL document. 
+
+
+Happy F8ing,
+
+Bammkkkk
+

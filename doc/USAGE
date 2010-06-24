@@ -1,0 +1,100 @@
+# $Id: USAGE,v 1.5 2005/11/03 03:32:30 bamm Exp $ #
+
+Connecting to the Server:
+Once the server (sguild) is running and the client (sguil.tk) can
+connect, you can manage events on a near realtime basis. Events
+populate the panes based on their priority (this is configurable).
+Multiple clients can connect to a server at a time. This client/server
+configuration also allows analyst to connect remotely more easily.
+For example, if an analyst has remote ssh access to the server network,
+he/she can tunnel the client/server comms over ssh.
+(i.e. `ssh mysystem.server.net -L 7734:sguildsystem:7734` now fire up
+sguil.tk and point it toward localhost.)
+ 
+
+
+Managing Events:
+Once an event has been reviewed, its status can be updated and the
+event deleted from the client. To expire an event and set its status
+to 1, select the event to expire->right click in status (ST) column
+->Select Expire from the menu. Events validated as malicious can
+also be placed into one of seven incident categories (see
+File->Display Incident Categories for a description) by selecting
+Update Event Status->Category from the menu. When an event is expired
+or placed into Incident Category, it is removed from all connected
+clients. Hot keys can also be used:
+
+<F1>-<F7>: Place the event into Category I - VII
+<F8>:  Expire the event.
+
+
+Querying the DB:
+Searches can be initiated using different "templates". For a blank
+template, use Query->Event Query. Once selected, a query builder
+allowing you to edit the query will pop up. Only the WHERE statement
+can be edited. Other templates are available by selecting an event
+and right clicking on the src/dst ip columns. NOTE: JOINs are now
+handled internally. The WHERE will be scanned and the appropriate
+FROM table1 JOIN table2 ON table1.foo=table2.foo will be prepended
+to your query.
+
+A blank template for session queries can be found under Query->Session Query
+and a completely blank query builder can be found under Query->Query Builder.
+
+If you wish to save a query for future use use Query->Standard Queries.
+In the Standard Query dialog, select File->Add Query to add a new user query.
+User queries are saved locally and therefore are only available on the
+machine used to create them.  To create a standard query for global use,
+edit the sguild.queries file on your sguild server. In order to have sguild
+reload the sguild.queries file and update the clients, send a -HUP signal
+to the sguild process.
+
+Correlated Events:
+Events that have the same src IP and signature/message are correlated
+under the same event in the appropriate RT pane. Each time an event
+is "correlated" the CNT field is incrimented by one. To view all
+the correlated events, select the event->right click on the CNT
+column->View Correlated Events. The shortcut for this info is to
+middle click on the CNT column of a selected event.
+
+Generating Transcripts, loading data into Ethereal:
+Make sure Ethereal is installed on the client system. Select an alert,
+right click on the sid.cid column. Select Transcript or Ethereal. 
+Middle clicking on the sid.cid column of a highlighted event will
+also request a transcript.
+
+Creating Reports:
+Plain Text or Email reports can be created by selecting the events
+to report and choosing Report-><Report Type>.  Summary reports contain
+the full packet headers, detail reports add the payloads.  You can also
+elect to sanitize your reports and have all IP addresses obfuscated.  Keep
+in mind that IP addresses encoded into payloads (ie. ICMP Dest Unreachable events)
+will still exist in the output.
+
+Query output can also be saved to a text file (human-readable, or delimited (CSV, <TAB>, |, etc)
+by clicking the "Export" button in a query pane.  This will export only the infomation
+that is contained in the query pane (ie. no header details, no payloads, etc).
+
+Auto-Categorization:
+You can have sguild automatically categorize events by editing the autocat.conf
+file on the sguild server.  These event will have a status automatically assigned
+to them and will not appear in any analyst's console.  Analysts can query 
+for "auto-catted" events by selecting the "Auto Cats" global standard query.
+In order to have sguild reload the autocat.conf file, 
+send a -HUP signal to the sguild process.  A HUP will only effect future events, 
+if you want to auto-cat previously received events, sguild must be restarted.
+
+Other:
+The up/down arrows can be used to select previous/next event in the
+pane. <Esc> will unselect all options (dns, whois, packet date, etc)
+at once.
+
+
+Help or Suggestions:
+Subscribe and post to the sguil-users list at 
+http://lists.sourceforge.net/lists/listinfo/sguil-users 
+or visit #snort-gui on irc.freenode.net.
+
+
+Bammkkkk
+bamm@sguil.net

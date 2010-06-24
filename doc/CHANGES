@@ -1,0 +1,633 @@
+# $Id: CHANGES,v 1.49 2006/02/14 04:47:51 bamm Exp $ #
+sguil-0.6.1 (13 Feb 2006)
+
+  sguil.tk
+    * Use Dr. Csaba Nemethi's tablelist widget.
+    * RealTime event panes are now sortable. 
+    * Columns for query results are sortable and moveable.
+    * Snort statistics displayed.
+    * Query builder includes support for UNIONs.
+    * Resizeable pane for rule info and packet data.
+
+
+  sguild
+    * OpenSSL/TLS support between sensor_agent and sguild.
+    * Snort statistic support.
+
+  sensor_agent.tcl
+    * OpenSSL/TLS support between sensor_agent and sguild.
+    * Snort statistic support.
+   
+
+sguil-0.6.0-RC1 (02 Nov 2005)
+
+  sguil.tk
+    * Drop down lists for sguild hosts on login (new ones saved). -srh/bamm
+    * Tabs added to info display (IP resolution, system msgs, etc). -bamm
+    * Sensor status tab. -bamm
+    * Support for sfportscan. -srh
+    * Quick queries bypass the query builder. -srh
+    * GPG signatures. -srh
+    * Abort and cancel transcripts.  -bamm
+  
+  sguild
+    * MRG_MyISAM tables used. -bamm
+    * Email event config moved to sguild.email. -bamm
+
+  sensor_agent.tcl
+    * All comms tunneled through sensor_agent.tcl. -bamm
+    
+  op_sguil
+    * No longer talkes directly to the DB. Passes alerts to
+      sensor_agent via localhost.  -bamm
+    * Must be compiled with tcl support so it can generate
+      proper tcl lists. -bamm
+   
+  incident_report.tcl
+    * New script for creating PHB html reports. -bamm
+
+sguil-0.5.3 (07 Dec 2004)
+
+  sguild
+   * Split code into a main sguild file and libs in a ./libs subdir
+     NOTE new sguild.conf variable for the lib dir location -bamm
+   
+   * DB version incremented to 0.10:
+	NEW TALBES: nessus, nessus_data
+	NEW COLUMN: long_desc added to status table for full status descriptions -srh
+   
+   * Storage/retrieval of nessus reports (see sguil.tk changes for details) -srh
+
+   * Checks sensor health via sensor_agent -bamm
+
+   * DEBUG split out into levels.  See sguild.conf for details (NOTE NEW sguild.conf) -srh
+
+   * Syslog supported for debug output in daemon mode (NOTE NEW sguild.conf) -srh
+
+   * Misc prettifying and bugfixifying -srh & bamm
+
+   * Use -d [0-2] to specify DEBUG level on cmd line - bamm (tks Hanashi)
+
+   * Added CONCURRENT to LOAD statements - bam (tks Hanashi)
+
+   * More var substitution options for emailing alerts - bamm (paulh request)
+
+   * Option to include the sensor for alert aggregation - bamm
+
+  sguil.tk
+   * Added ability to import/query nessus reports: -srh
+	1)  Import your nessus nbe report files from the Report Menu (only nbe's
+ 		are supported).  This nbe can be for as many ip addresses as you want.
+ 		Keep in mind that it may take a bit of time to import if you are
+ 		importing a whole class C or something.  It uses mysql's LOAD statement
+ 		to get the data in the DB, so it won"t kill mysql during import.
+ 	2)  When you get an event, right click on the ip address in question and
+ 		select Nessus Report.
+ 	3)  If there is a report available for that IP, the date of the
+ 		report(s) will come up in a listbox.  Click the report you wish to view
+ 		and click the "view report" button.
+ 	4)  Sguil will launch your browser (specified by the BROWSER_PATH entry
+ 		in sguil.conf) with the report.
+
+   * Added ability to change sensors without restarting client -srh
+
+   * Prettifyed sensor report dialog -srh
+ 
+   * Added "Unselect all" button to sensor selection dialog -srh
+
+   * Sensor Agent Health checks -bamm
+
+   * Added Right-click queries for RT event by IP address, port, and event -srh
+
+   * Added Right-click "last 1 hour" queries to the sancp and sessions menus -srh
+
+   * Added a text search widget for xscripts -srh
+
+   * Use -d [0-2] to specify DEBUG level on cmd line - bamm (tks Hanashi)
+
+   * Bug fixes etc
+
+  sensor_agent.tcl
+
+   * Health Checks -bamm
+
+
+sguil-0.5.2 (12 Aug 2004)
+
+  sguild
+   * Fixed a major bug in the autocat function. -srh
+
+sguil-0.5.1 (10 Aug 2004)
+
+ General
+  * Text based reporting is in.  You can generate reports from 
+    any SELECT query to a text output format and save it.  This
+    allow aggregate queries (TOP TEN Events, etc).  Queries are
+    stored in the new sguild.reports file on the sguld server. -srh
+
+ sguild
+  * Autocat rules now support regular expressions (in TCL expanded syntax)
+    for matching signature messages.  -srh
+
+ sguil.tk
+  * Added a search widget to do searches of the text and hex payload
+    to make it easier to find that string that made the rule fire.
+    Toggle the widget on/off with ctl-f or right-click in the payload
+    window.  You can set the default state in sguil.conf.  Default 
+    is on. -srh
+
+  * Can use festival directly for those on win32 systems. -bamm
+
+ Sensor
+  * The directory structure on the sensor was changed to
+    $LOG_DIR/$SENSOR_NAME. For example, a sensor called foobar that used
+    /snort_data as its root logging directory would now use /snort_data/foobar.
+    This allows us to run multiple snort instances in ids mode on multiple
+    interfaces without mixing data together by refering to each instance as
+    a different sensor name. Therefore, one could have foobar-eth0, foobar-eth1,
+    ...foobar-ethN logging to seperate directories as well as seperate barnyard
+    and sensor_agent reading from those directories. -bamm
+ 
+sguil-0.5.0 (29 Jun 2004)
+
+ General
+  * The spp_stream4 patch was modified to include ip protocol
+    in its output. If you are using stream4 keepstats, then you
+    MUST RECOMPILE SNORT with the new patch.
+
+  * xscriptd functions have been moved into sguild. Sguild now
+    requests/gets pcap files via sensor_agent.tcl. If you are 
+    upgrading from an older sguil version, make sure you update
+    to the new sguild.conf. - bamm
+
+  * Event correlation/aggregation functions moved from sguil.tk
+    to sguild. The loading of events into sguil.tk on initial
+    connect should now feel quicker when a large amount of active
+    realtime events are in the queue. Sguild, however, takes 
+    slightly longer to load on init when dealing with a large
+    number of events, as it now has to spend time doing
+    aggregation.
+
+ sensor_agent.tcl
+  * Now uses sensor_agent.conf for configuration options. - bamm
+    (Default location is /etc/sensor_agent.conf)
+
+  * New options: - bamm
+     -c <filename>: PATH to config (sensor_agent.conf) file.
+     -D Runs sensor_agent in daemon mode. (Requires tclx)
+
+ spp_stream4_sguil.patch
+  * Added the ip_proto to the output. - bamm
+
+ sguil.tk
+  * Added the ip_proto (Pr) field for session and sancp queries - bamm
+  * Sguild server can be modified at login prompt. - bamm
+  * List of users monitoring available sensors added to the 
+    "select sensors" display. -bamm
+  * Servername, Username and UserID displayed in the top bar. - bamm
+
+ Database sql scripts
+  * Bumped to version 0.9 to include ip_proto field for the sessions
+    table. Update script included. - bamm
+
+sguil-0.4.0 (28 Apr 2004)
+
+ sguild:
+  * fixed urp/chksum flipflop bug in GetTcpData. -mboman
+  * forks two procs for queries and db loads. -bamm
+
+ sguil.tk:
+  * sancp queries, including bitmath -srh
+  * support for sancp (http://www.metre.net/sancp.html) -bamm
+  * arrow navigation bugfixes -srh
+  * SSN exports adds the column headers -srh (thanks creining)
+  * addition of icat external data button -creining
+
+ sensor:
+  * addition of sancp.conf (see README.sancp for more info) -bamm
+  * support for loading sancp data -bamm
+
+ server:
+  * support binding sguild to specific IP address -bamm
+  * support for filtering client IP addrs, including sensors -bamm
+  * fixed urp/chksum flipflop bug in GetTcpData -mboman
+  * create_sancp_table.sql script -mboman
+  * v7 -> v8 scheme migration script -mboman
+  * DB scheme change, GID stored as well -mboman
+
+ xscriptd:
+  * authenticate users with sguild.users file -bamm
+
+ op_sguil.c:
+  * bug fix in bounds limit for ipInfo (thanks nitzer) -bamm
+
+ other:
+  * Barnyard now supports Sguil output natively
+
+sguil-0.3.1 (09 Jan 2004)
+                                                                                                
+  snort-patches
+    * spp_portscan plays will w/snort-2.1 now (mSplitFree) - bamm
+                                                                                                
+  sguil.tk
+    * Fixed 'cancel'button in Optimize Tables.  -srh
+                                                                                                
+    * Query builder looks for existing window before launching new -srh
+                                                                                                
+    * Fixed typos in reporting. -srh
+                                                                                                
+                                                                                                
+  sguild
+    * Checks /etc/sguild/ for conf files prior to cwd if
+      no PATH was specified. - bamm
+                                                                                                
+    * Bugfixes for SendEvent{} and multiple sensors (tks jlc). - bamm
+                                                                                                
+    * Fixed random seed bug. Thanks Dave Wilburn. - bamm
+                                                                                                
+    * Initial SELECT returns RT events in chronological order
+      (ORDER BY event.timestamp ASC). Thanks Dave. - bamm
+                                                                                                
+    * Fixed parser bug in event comments (colon foo). - bamm
+                                                                                                
+  log_packets.sh
+    * Manages disk space by removing old files as defined limit is
+      approached. - bamm
+                                                                                                
+sguil-0.3.0p1 (11 Nov 2003)
+
+  sguil.tk 
+    * (qrylib.tcl) Grouped src_ip OR dst_ip statement with ()'s - bamm
+
+    * (qrylib.tcl) Parse WHERE statement and build appropriate INNER JOIN(s) - bamm
+
+  sguild.queries
+     * Rm'd JOIN (event.sid=sensor.sid) as qrylib.tcl handles this now - bamm
+
+sguil-0.3.0 (30 Oct 2003)
+
+  **** WARNING WARNING WARNING ****
+  * If you are updating, make sure*
+  * you recompile barnyard with   *
+  * the latest op_sguil.c. Other- *
+  * wise barnyard and sguild will *
+  * go Kaplooey.  Bammkkkk        *
+  **** WARNING WARNING WARNING ****
+
+  spp_stream4_sguil.patch
+    * Fixed a gmtime/localtime bug. All session times are
+      GMT so use -U when starting snort.
+
+  op_sguil
+    * Now makes a sustained connection to sguild rather vs.
+      a new connect for each event.
+
+    * Events table gets updated first.
+
+  sguil.tk
+    * Added Text Export Button to send query reults to a 
+      text file (human-readable or delimited(CSV, TAB, etc) -SRH
+
+    * Added A Human-Readable text report to the reports menu
+      to output full event details (with or without payload) to
+      a text file. -SRH
+
+    * Revamped the way reports get their data.  It now happens
+      over the main sguil-sguild socket.  Much faster.  -SRH
+
+    * User and Global Standard queries supported (started by Bamm, finished by SRH)
+
+    * Fixed Mouse-Wheel scrolling in X and Windows (geek2)
+
+    * Added a GUI Query Builder, for easy SQL editing. (geek2)	
+    
+    * Changed the Comm's to use ctoken instead of l{range,index}
+      so random word boundry characters in UserMessages or Event
+      descriptions doesn't pop errors. (geek2)
+    
+    * Fixed fcopy bug for Ethereal requests (thanks
+      Tim Slighter).
+
+    * Added better Ethereal config options in (sguil.conf)
+
+    * Added/Modified Dshield lookup (http://www.dshield.org)
+      to src and dst ip drop down menus. (requested by mboman
+      added by geek2)
+
+    * Added Dshield port lookup (creining)
+ 
+    * Modified client authentication. See sguild comments for
+      more information. (NOTE: sguil.tk now REQUIRES tcllib)
+
+    * Many Bug Fixes
+
+
+
+  sguild
+    * Sustained cnx with op_sguil (barnyard). 
+
+    * Support for emailing events. 
+
+    * Proc SendSensorList now makes sure sensor.active=y.
+
+    * Added a salt to passwd hash in sguild.users. The
+      authentication has been modified so the client never
+      sends the passwd. Instead, the salt and noonce are
+      sent to the client and returned hash is compared by
+      the server. (NOTE: Old sguild.users files will NOT
+      work.)
+
+    * Support for standard queries. 
+
+    * Auto-categorizing of alerts introduced.
+
+    * Updates last_uid field (version 0.7 of DB required).
+
+    * kill -HUP <sguild.pid> now reloads autocat.conf and
+      sguild.queries.
+
+  sguild.conf
+    * Vars for emailing selected events.
+
+  log_packets.sh
+    * Removed some legacy hostname stuff.
+
+    * Added var for BPFs.
+
+sguil-0.2.5 (15 Jul 2003)
+
+  * Multiple undocumented bugfixes. I recommend updating
+    all sguil components (no need to repatch snort and
+    barnyard) to include sguild, xscriptd, sensor_agent.tcl,
+    log_packets.sh, and sguil.tk.
+
+sguil-0.2.4 (11 Jul 2003)
+  sguil.tk
+    * Added lib/whois.tcl, a simple replacement for those
+      third party whois scripts.
+
+    * Client remains up on disconnect from sguild. Attempts
+      to reconnect after 10 seconds.
+
+    * Decode ICMP redirect
+
+    * Added option to change the max number of rows returned
+      for portscan event data. Set the default in sguil.conf.
+
+    * Added 'User Messages' box for analyst to communicate
+      via text messages.
+
+  sguild
+    * Added -D (daemonize) and -P <pidFile> switches.
+
+    * Changed sensorCmd to use ctoken to avoid crashes
+      when special chars are in the message
+
+    * Added OpenSSL for client <> server comms.
+
+    * Does version checking with clients
+
+    * Checks for compatable DB schema
+
+    * Added sha1 support for hashed passwds plus
+      -adduser and -deluser functions. Authentication
+      should now be considered fairly secure when used
+      in conjunction with OpenSSL or ssh tunneling.
+
+  xscriptd
+    * Added -D (daemonize) and -P <pidFile> switches.
+
+    * Using a regexp instead of lindex to test for spp_portscan
+      event, avoids error on special chars
+
+    * Added OpenSSL for client <> server comms.
+
+    * Added version checking for connecting clients.
+
+
+Version 0.2
+  sguil.tk
+    * Re-arranged menu
+
+    * Database Purge/Optimize
+
+    * GMT clock
+
+    * Many bugfixes
+
+    * User log in for accountability (no authentication (yet))
+    
+    * Add comments to events (shift-F<n>)
+
+    * E-Mail events in summary or detail with option to 'sanatize IP addresses
+
+    * Session Queries
+
+    * Event History
+    
+    * Added decodes for ICMP Type 3 (dest Unreachable) and 11 (time exceeded)
+    
+    * Dialog for selecting sensor(s) on to monitor added
+      to initialization.
+
+    * Fixed escalate bug where events weren't removed from all
+      connected clients.
+
+    * Added a Show DB Tables function to assist analyst in 
+      creating queries.
+
+  sguild
+    * Added procs and changes required for monitoring specific
+      sensors.
+
+    * Fixed escalate bug where events weren't removed from all
+      connected clients.
+
+    * Gets DB table info on init in support of the "Show DB
+      Tables" function added to sguil.tk.
+
+    * changed GetIcmpData to return the payload so we can parse it out 
+    
+    * Proc CreateDB added. Sguild will create the required database
+      if it doesn't exists (on request).
+    * many many bugfixes.
+    * Added SimpleQueryCommand for OOB queries
+    * History and comment support for events.
+    * New system messages (user login/out, monitored sensors).
+    * Changed ExecDB to allow for DELETE and other non-SELECT/UPDATE queries (if DB permissions permit it)
+    * DB schema slightly changed
+    * Moved the config to sguild.conf and added a sguild.users
+
+  op_sguil.c
+    * Added "nospin" option for those users who want barnyard
+      to continue processesing events if unable to connect to
+      sguild.
+
+  xscriptd
+    * Added passive OS detection (p0f)
+
+Version 0.1
+  sguil.tk
+    * MulitiSelect functionality added by Steve Halligan (geek2)
+      shalligan@333tech.com.
+
+    * Removed : from temporary raw data file name for use with
+      Windows.
+
+Version 0.1 BETA 4
+  *NOTE: This version requires a slight modification to
+          the sguil.conf [addition of the CATEGORY_COLOR(ES)]
+
+  sguild
+    * Fixed GetPSData bug (didn't close mysql socket).
+   
+    * Now handles escalated events (very beta right
+      now).
+
+  sguil.tk
+    * Added an Escalation tab. Use F9 or right click->
+      Update Event Status->Escalate to move alerts into
+      this tab. Allows analyst to easily "bookmark"
+      alerts for later review while keeping the RT
+      screen clear.
+
+ 
+
+Version 0.1 BETA 3
+
+  sguil.tk
+    * Ctrl-left/right arrow selects previous/next tab
+
+    * Added a "force new" option for generating xscripts. This
+      forces xscriptd to ignore any locally archived sessions
+      and try to get a new one. Useful where a xscript was
+      generated mid session and the analyst wants to see if
+      more acty has occurred.
+
+    * The transcript window now shows debug messages (per geek2).
+
+  xscriptd
+    * Added a "force new" option for generating xscripts. See
+      above for more info.
+
+    * Sends debug message for the transcript window.
+
+Version 0.1 BETA 2
+  sguil.tk
+    * Added event query menu and template (right
+      click on selected event in the Event Type
+     column).
+
+    * Query templates pop up under mouse position.
+
+    * Unselected tabs are now darker. Oooo pretty.
+
+  sguild
+    * Fixed portscan passwd bug.
+
+Version 0.1 BETA 1
+  LICENSE
+    * When sguil is finally released, it will
+      be done so over the QPL. BY is licensed under
+      the QPL, therefore op_sguil must be released
+      under that license and it's easier just to use
+      one license for everything.
+
+    * spp_portscan mod introduced as well as a loader
+      for the DB and an interface to the data within
+      sguil.tk.
+
+  xscriptd
+    * Bugfix: close tcpflowID bug.
+
+  op_sguil.c
+    * Slight change in SguilSendEvent format.
+
+  sguild
+    * Slight change in SensorRcvdCmd format.
+    * Sguild receives data from portscan_loader.tcl and
+      LOADs the data into the DB.
+
+  sguil.tk
+    * Fixed non-TCP ethereal bug.
+
+Version 0.1 ALPHA 6:
+
+  sguil.tk
+    * Change Font added to the File menu. Standard is
+      applied to most of the GUI while Fixed is for the
+      packet data text box.
+
+  sguild
+    * Syslog is no longer used for sending and sguild now
+      opens port 7736 for and op_sguil is connects/sends
+      RT events directly to sguild.
+
+  op_sguil.c
+    * SguilSendEvents() was added and all syslog references
+      were removed. See comments in op_sguil.c for more info.
+
+Version 0.1 ALPHA 5:
+
+  sguil.tk
+    * Bugfix: Alerts couldn't be marked as CatI-VII
+    * Bugfix: Alerts updated from the query results tab
+      were not being passed to the DB.
+
+  sguild
+    * Bugfix: sguild wasn't closing cnxs to mysql 
+      after a query.
+
+Version 0.1 ALPHA 4:
+  sguil.tk
+    * Added a default color for NA alerts (bugfix).
+    * Added speech support. Requires speechd available
+      at http://www.speechio.org.
+    * Fixed xscript cmd interpretation bug.
+    * Added a text box to the query tabs to display the
+      query statement. Modifying the query and pressing
+      <Enter> will run a new query.
+    * Query's can now be sorted by double clicking on 
+      the list label (ie Src IP, Dst IP, etc).
+
+  xscriptd
+    * Fixed xscript cmd interpretation bug.
+
+
+Version 0.1 ALPHA 3:
+  Added xscriptd. See INSTALL for more info.
+
+  sguil.tk
+    * Added transcript and ethereal support
+      (xscriptd). See INSTALL for details. This
+      stuff is real alpha so let me know about
+      any problems.
+    * Added a SLEEP function. When used (selected
+      from File or Ctrl-s) the GUI will be iconified
+      and will beep/deiconify when it receives a new
+      event.
+
+Version 0.1 ALPHA 2: 
+
+  Added a USAGE file.
+
+  sguild:
+    * Added DBPASS for mysql passwd.
+    * Updates the DB multiple events at a time.
+    * Fixed open file handle bug.
+
+  sguil.tk
+    * Sends a list of events to be expired rather than
+      one at a time when expiring correlated events.
+    * Select previous alert when expiring bottom alert.
+    * Up/Down arrows select previous/next alert in pane.
+    * Escape key deselects all options.
+    * Alerts can be expired or caterogized into an
+      incident category (CatI-CatVII). F1-F7 are the 'hot'
+      keys.
+
+  op_sguil.c
+    * Fixed unknown class_type bug.
+
+Version 0.1 ALPHA 1:
+  * Initial (private) release: 23 Sep 2002.

@@ -1,0 +1,42 @@
+## Sguil Client Plugin Framework - README
+## fracBlend - 06/23/2010
+#
+# Plugins are very straight forward
+# build your plugins like so:
+# ./example-<version number>
+# ./example-<version number>/README 
+# ./example-<version number>/plugin.tcl
+# ./example-<version number>/plugin.conf 
+#
+# Place the plugin in the PLUGINDIR (Defined in sguil.conf)
+# Presto! The plugin will be loaded at client runtime.
+#
+### Sample plugin.conf ###
+##
+set FOO "bar" 	# set a namespace global variable
+set ::RTPANES 3	# set a global variable from sguil.conf
+
+### Sample plugin.tcl ###
+##
+# Global Actions:
+# Insert any actions / commands you want executed in the global namespace
+$eventIDMenut delete 0 # Drop the "Event History" Menu Item
+$eventIDMenut add command -label "Incident History" -command "Awesome::Sauce" # Add it back with improved corporate Umphf!
+##
+# Namespace declaration:
+# Choose a unique namespace for your plugin
+namespace eval Awesome {
+
+	# Set a plugin version  
+	set version "0.1"
+
+	# export any namespace/plugin specific procs you want accessible from within Sguil.tk
+	namespace export Query
+
+	# source your plugin.conf file
+	source "./plugins/example-${version}/plugin.conf"
+
+	# define your namespace procs (Called like Awesome::Sauce)
+	proc Sauce {}
+}
+# Call it a day.
