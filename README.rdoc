@@ -26,7 +26,7 @@ This version of the Sguil Client is a simple fork of the 0.7.0 release with some
 	# Global Actions:
 	# Insert any actions / commands you want executed in the global namespace
 	$eventIDMenut delete 0 # Drop the "Event History" Menu Item
-	$eventIDMenut add command -label "Incident History" -command "Awesome::Sauce" # Add it back with improved corporate Umphf!
+	$eventIDMenut add command -label "Incident History" -command "Awesome::Sauce" # Add it back
 	##
 	# Namespace declaration:
 	# Choose a unique namespace for your plugin
