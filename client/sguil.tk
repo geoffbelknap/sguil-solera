@@ -16,7 +16,8 @@ exec wish "$0" "$@"
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
+# 
+# Tinker / Sandbox Version of Sguil Client
 ########################## GLOBALS ##################################
 
 set VERSION "SGUIL-0.7.0"
