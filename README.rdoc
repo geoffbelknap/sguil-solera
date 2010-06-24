@@ -2,7 +2,7 @@
 
 This version of the Sguil Client is a simple fork of the 0.7.0 release with some minor changes.
 * A Proof of Concept Plugin Framework
-* {Solera Networks}[link:http://www.soleranetworks.com] Integration (PoC Plugin) 
+* Solera Networks Integration (PoC Plugin) 
 
 = Plugin Framework
 
