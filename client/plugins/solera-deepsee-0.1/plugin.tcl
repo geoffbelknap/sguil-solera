@@ -161,6 +161,24 @@ namespace eval Solera {
 				set queryIPs "%2Fipv4_address%2F${srcIP}_and_${dstIP}"
 			}
 		}
+		switch $proto {
+			"6" {
+				# TCP
+				set queryProto "%2Ftcp_port%2F${srcPort}_and_${dstPort}"
+			}
+			"17" {
+				# UDP
+				set queryProto "%2Fudp_port%2F${srcPort}_and_${dstPort}"
+			}
+			"1" {
+				# ICMP
+				set queryProto "%2Fip_protocol%2Ficmp"
+			}
+			default {
+				# All Other Protocols
+				set queryProto "%2F"
+			}
+		}
 		switch $report_type {
 			"sonar" {
 				set queryType "%2F;reportIndex=0"
@@ -181,24 +199,7 @@ namespace eval Solera {
 				set queryType "%2F;reportIndex=5"
 			}
 		}
-		switch $proto {
-			"6" {
-				# TCP
-				set queryProto "%2Ftcp_port%2F${srcPort}_and_${dstPort}%2F;reportIndex=0"
-			}
-			"17" {
-				# UDP
-				set queryProto "%2Fudp_port%2F${srcPort}_and_${dstPort}%2F;reportIndex=0"
-			}
-			"1" {
-				# ICMP
-				set queryProto "%2Fip_protocol%2Ficmp%2F;reportIndex=0"
-			}
-			default {
-				# All Other Protocols
-				set queryProto "%2F;reportIndex=0"
-			}
-		}
+		
 		exec $BROWSER_PATH $querySetup$queryIPs$queryProto$queryType &
 	}
 
