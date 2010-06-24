@@ -1,0 +1,66 @@
+= sguil-solera
+
+This version of the Sguil Client is a simple fork of the 0.7.0 release with some minor changes.
+* A Proof of Concept Plugin Framework
+* {Solera Networks}[link:http://www.soleranetworks.com] Integration (PoC Plugin) 
+
+= Plugin Framework
+
+	# Plugins are very straight forward
+	# build your plugins like so:
+	# ./example-<version number>
+	# ./example-<version number>/README 
+	# ./example-<version number>/plugin.tcl
+	# ./example-<version number>/plugin.conf 
+	#
+	# Place the plugin in the PLUGINDIR (Defined in sguil.conf)
+	# Presto! The plugin will be loaded at client runtime.
+	#
+	### Sample plugin.conf ###
+	##
+	set FOO "bar" 	# set a namespace global variable
+	set ::RTPANES 3	# set a global variable from sguil.conf
+
+	### Sample plugin.tcl ###
+	##
+	# Global Actions:
+	# Insert any actions / commands you want executed in the global namespace
+	$eventIDMenut delete 0 # Drop the "Event History" Menu Item
+	$eventIDMenut add command -label "Incident History" -command "Awesome::Sauce" # Add it back with improved corporate Umphf!
+	##
+	# Namespace declaration:
+	# Choose a unique namespace for your plugin
+	namespace eval Awesome {
+
+		# Set a plugin version  
+		set version "0.1"
+
+		# export any namespace/plugin specific procs you want accessible from within Sguil.tk
+		namespace export Query
+
+		# source your plugin.conf file
+		source "./plugins/example-${version}/plugin.conf"
+
+		# define your namespace procs (Called like Awesome::Sauce)
+		proc Sauce {}
+	}
+	# Call it a day.
+
+= About Sguil
+
+Sguil (pronounced sgweel) is built by network security analysts for network security analysts. Sguil's main component is an intuitive GUI that provides access to realtime events, session data, and raw packet captures. Sguil facilitates the practice of Network Security Monitoring and event driven analysis. The Sguil client is written in tcl/tk and can be run on any operating system that supports tcl/tk (including Linux, *BSD, Solaris, MacOS, and Win32).
+
+Bamm Visscher is the lead developer and can be contacted directly via bamm at sguil dot net. 
+(But not about about this fork.  None of this is his fault.  not directly anyway.)
+
+This project is just a sandbox.  If you're looking for help with Sguil, beyond this specific fork of the client, try IRC: Sguil has a very active support channel #snort-gui on Freenode.
+
+== Note on Patches/Pull Requests
+ 
+* Fork the project.
+* Make your feature addition or bug fix.
+* Add tests for it. This is important so I don't break it in a
+  future version unintentionally.
+* Commit, do not mess with rakefile, version, or history.
+  (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
+* Send me a pull request. Bonus points for topic branches.
